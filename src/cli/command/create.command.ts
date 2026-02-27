@@ -1,8 +1,12 @@
-import type { VaultService } from "../../services/vault.service"
-import { CreateDto } from "../dto/create.dto"
+import type { IVaultService } from "../../interfaces/vault-service.interface"
+import { CreateDto } from "../dtos/create.dto"
+import type { ICommand } from "../interface/command.interface"
 
-export class CreateCommand {
-  constructor(private service: VaultService) {}
+export class CreateCommand implements ICommand {
+  constructor(
+    private service: IVaultService,
+    private path: string,
+  ) {}
 
   async execute(args: string[]) {
     const title = args.find((it) => it.startsWith("--title="))?.split("=")[1]
@@ -18,6 +22,6 @@ export class CreateCommand {
 
     const dto = new CreateDto(title, content)
 
-    await this.service.create(dto.fromEntity())
+    await this.service.create(this.path, dto.fromEntity())
   }
 }
