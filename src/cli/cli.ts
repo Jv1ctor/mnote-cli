@@ -1,29 +1,16 @@
 #!/usr/bin/env bun
 
-import { resolvePath } from "../helpers/resolve-path.helpers"
-import { VaultRepository } from "../repositories/vault.repository"
-import { VaultService } from "../services/vault.service"
 import { CreateCommand } from "./command/create.command"
 import { ReadCommand } from "./command/read.command"
 import { getPathArg } from "./utils/path-arg.utils"
 import { ListCommand } from "./command/list.command"
 import type { Config } from "../config/config"
+import type { IVaultService } from "../interfaces/vault-service.interface"
+import { ConfigCommand } from "./command/config.command"
 
-export async function cli(config: Config) {
+export async function cli(service: IVaultService, config: Config) {
   const args = process.argv.slice(2)
   const command = args[0]
-
-  if (command == "config") {
-    const path = args
-      .find((it) => it.startsWith("--vault-path="))
-      ?.split("=")[1]
-    if (!path) {
-      console.log("necessary insert --vault-path")
-      return
-    }
-
-    await config.savePath(path)
-  }
 
   if (!command || command.includes("help")) {
     console.log("Use: mnote config --vault-path=<path>")
@@ -32,13 +19,17 @@ export async function cli(config: Config) {
     console.log("Use: mnote list optional(--dir=<dirname>)")
   }
 
+  if (command == "config") {
+    const configCommand = new ConfigCommand(config)
+
+    await configCommand.execute(args)
+  }
+
   if (command === "create") {
     const path = (await config.getPath()) || getPathArg(args)
     if (!path) return
 
-    const repo = new VaultRepository(resolvePath(path))
-    const service = new VaultService(repo)
-    const create = new CreateCommand(service)
+    const create = new CreateCommand(service, path)
 
     await create.execute(args)
   }
@@ -47,9 +38,7 @@ export async function cli(config: Config) {
     const path = (await config.getPath()) || getPathArg(args)
     if (!path) return
 
-    const repo = new VaultRepository(resolvePath(path))
-    const service = new VaultService(repo)
-    const read = new ReadCommand(service)
+    const read = new ReadCommand(service, path)
 
     await read.execute(args)
   }
@@ -58,9 +47,7 @@ export async function cli(config: Config) {
     const path = (await config.getPath()) || getPathArg(args)
     if (!path) return
 
-    const repo = new VaultRepository(resolvePath(path))
-    const service = new VaultService(repo)
-    const list = new ListCommand(service)
+    const list = new ListCommand(service, path)
 
     await list.execute(args)
   }
