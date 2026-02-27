@@ -40,7 +40,7 @@ export async function cli(config: Config) {
     const service = new VaultService(repo)
     const create = new CreateCommand(service)
 
-    create.execute(args)
+    await create.execute(args)
   }
 
   if (command == "read") {
