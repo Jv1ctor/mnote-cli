@@ -1,18 +1,24 @@
 import type { Note } from "../entity/note.entity"
-import type { IVaultRepository } from "../interfaces/vault.interface"
+import type { IVaultRepositoryFactory } from "../interfaces/vault-repository-factory.interface"
+import type { IVaultService } from "../interfaces/vault-service.interface"
 
-export class VaultService {
-  constructor(private repo: IVaultRepository) {}
+export class VaultService implements IVaultService {
+  constructor(private repoFactory: IVaultRepositoryFactory) {}
 
-  async create(note: Note) {
-    await this.repo.create(note)
+  async create(path: string, note: Note) {
+    const repo = this.repoFactory.create(path)
+    await repo.create(note)
   }
 
-  async read(name: string) {
-    return this.repo.read(name)
+  async read(path: string, name: string) {
+    const repo = this.repoFactory.create(path)
+    return repo.read(name)
   }
 
-  async list(dirname?: string) {
-    return this.repo.listAll(dirname)
+  async list(path: string, dirname?: string) {
+    const repo = this.repoFactory.create(path)
+    return repo.listAll(dirname)
   }
+
+  async update(path: string, note: Note): Promise<void> {}
 }
