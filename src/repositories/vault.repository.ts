@@ -1,5 +1,5 @@
 import type { Note } from "../entity/note.entity"
-import type { IVaultRepository } from "../interfaces/vault.interface"
+import type { IVaultRepository } from "../interfaces/vault-repository.interface"
 import { readdir } from "node:fs/promises"
 import { join } from "path"
 
