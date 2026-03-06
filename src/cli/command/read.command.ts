@@ -19,7 +19,7 @@ export class ReadCommand implements ICommand {
     const content = await this.service.read(this.path, name)
 
     if (content.length <= 0) {
-      console.log("empty note")
+      console.error("empty note")
       return
     }
 

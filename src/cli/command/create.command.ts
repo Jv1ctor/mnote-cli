@@ -22,6 +22,6 @@ export class CreateCommand implements ICommand {
 
     const dto = new CreateDto(title, content)
 
-    await this.service.create(this.path, dto.fromEntity())
+    await this.service.create(this.path, dto.toEntity())
   }
 }

@@ -13,10 +13,10 @@ export async function cli(service: IVaultService, config: Config) {
   const command = args[0]
 
   if (!command || command.includes("help")) {
-    console.log("Use: mnote config --vault-path=<path>")
-    console.log("Use: mnote create --title=<title> --content=<content>")
-    console.log("Use: mnote read --name=<name>")
-    console.log("Use: mnote list optional(--dir=<dirname>)")
+    console.error("Use: mnote config --vault-path=<path>")
+    console.error("Use: mnote create --title=<title> --content=<content>")
+    console.error("Use: mnote read --name=<name>")
+    console.error("Use: mnote list optional(--dir=<dirname>)")
   }
 
   if (command == "config") {

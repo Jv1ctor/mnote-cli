@@ -6,10 +6,13 @@ export class CreateDto {
     public content: string,
   ) {}
 
-  fromEntity() {
+  toEntity() {
     const note = new Note()
+    const map = new Map()
+    this.content.split("\n").forEach((it, idx) => map.set(idx, it))
+
     note.title = this.title
-    note.content = this.content
+    note.contents = map
 
     return note
   }
