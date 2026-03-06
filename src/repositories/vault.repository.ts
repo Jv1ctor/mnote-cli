@@ -1,7 +1,9 @@
-import type { Note } from "../entity/note.entity"
+import { Note } from "../entity/note.entity"
 import type { IVaultRepository } from "../interfaces/vault-repository.interface"
 import { readdir } from "node:fs/promises"
 import { join } from "path"
+import type { OptionsUpdate } from "../types/options-update.types"
+import { NoteMapper } from "../mappers/note.mapper"
 
 export class VaultRepository implements IVaultRepository {
   constructor(private path: string) {}
@@ -9,7 +11,7 @@ export class VaultRepository implements IVaultRepository {
   async create(note: Note): Promise<void> {
     const file = Bun.file(join(this.path, `${note.title}.md`))
 
-    await file.write(note.content)
+    await file.write(note.toStringContents())
   }
 
   async read(name: string): Promise<string> {
@@ -21,12 +23,31 @@ export class VaultRepository implements IVaultRepository {
   async listAll(dirname?: string): Promise<string[]> {
     const dirList = await readdir(join(this.path, dirname ?? ""))
 
-    const filteredList = dirList.filter( (it) => !it.startsWith('.') || it.endsWith('.md'))
+    const filteredList = dirList.filter(
+      (it) => !it.startsWith(".") || it.endsWith(".md"),
+    )
 
     return filteredList
   }
 
-  async update(note: Note): Promise<void> {
-    await this.create(note)
+  async update(note: Note, options: OptionsUpdate): Promise<void> {
+    if (options.lineStart && options.lineEnd) {
+      const content = await this.read(note.title)
+      const arr = content.split("\n")
+
+      for (let i = options.lineStart; i <= options.lineEnd; i++) {
+        const text = note.contents.get(i)
+        if (text) {
+          arr[i] = text
+        }
+      }
+
+      const newNote = new NoteMapper().toEntity({
+        title: note.title,
+        content: arr,
+      })
+
+      await this.create(newNote)
+    }
   }
 }
