@@ -12,7 +12,7 @@ const run = async () => {
 
   const repositoryFactory = new VaultRepositoryFactory()
   const service = new VaultService(repositoryFactory)
-  // cli(service, config)
+  cli(service, config)
   mcp(service, config).catch((error) => {
     console.error("Fatal error in main():", error)
     process.exit(1)
