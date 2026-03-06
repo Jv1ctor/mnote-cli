@@ -6,6 +6,10 @@
   "bin": {
     "mnote": "./src/index.ts"
   },
+  "scripts": {
+    "build": "tsc && chmod 755 ./src/index.ts",
+    "inspector": "bunx @modelcontextprotocol/inspector docker run -i --rm -v $(pwd):/workspace mcp-obsidian-server:latest"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
