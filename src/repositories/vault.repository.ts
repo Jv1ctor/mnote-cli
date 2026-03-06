@@ -37,8 +37,8 @@ export class VaultRepository implements IVaultRepository {
 
       for (let i = options.lineStart; i <= options.lineEnd; i++) {
         const text = note.contents.get(i)
-        if (text) {
-          arr[i] = text
+        if (text !== undefined) {
+          arr[i - 1] = text
         }
       }
 
