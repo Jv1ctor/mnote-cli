@@ -22,7 +22,7 @@ export class Config {
       const data = { path }
       await Bun.write(this.config, JSON.stringify(data) || "")
     } catch (error) {
-      console.log("Failed to write in config file")
+      console.error("Failed to write in config file")
     }
   }
 
@@ -32,7 +32,7 @@ export class Config {
       const config = JSON.parse(data) as ConfigJsonSchema
       return config.path
     } catch (error) {
-      console.log("Failed to read config file")
+      console.error("Failed to read config file")
     }
   }
 }
