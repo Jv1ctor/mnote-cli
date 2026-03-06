@@ -1,8 +1,14 @@
 export class Note {
-  public title: string
-  public content: string
+  public title!: string
+  public contents!: Map<number, string>
 
-  fromString() {
-    return this.title + "\n" + this.content
+  toStringContents() {
+    let text = ""
+    this.contents.forEach((it) => (text += it + "\n"))
+    return text
+  }
+
+  toString() {
+    return this.title + "\n" + this.toStringContents()
   }
 }
