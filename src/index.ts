@@ -1,8 +1,8 @@
 #!/usr/bin/env bun
 
-import { cli } from "./cli/cli"
-import { Config } from "./config/config"
-import { mcp } from "./mcp/mcp"
+import { cli } from "./modules/cli/cli"
+import { Config } from "./modules/config/config"
+import { mcp } from "./modules/mcp/mcp"
 import { VaultRepositoryFactory } from "./repositories/vault.repository.factory"
 import { VaultService } from "./services/vault.service"
 
