@@ -19,6 +19,7 @@ export class ReadCommand implements ICommand {
 
     const content = await this.service.read(this.path, name)
 
+    // TODO: remove when finished processor module
     await new MarkdownProcessor().toTree(content)
 
     if (content.length <= 0) {
