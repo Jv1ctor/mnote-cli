@@ -18,6 +18,9 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.27.1",
+    "remark": "^15.0.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5",
     "zod": "3"
   }
 }
